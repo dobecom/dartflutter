@@ -1,12 +1,70 @@
 import 'package:flutter/material.dart';
 
-class CloneApp extends StatelessWidget {
-  const CloneApp({super.key});
+class ScheduleInfo {
+  final Color bgColor;
+  final int startHour;
+  final int startMinute;
+  final int endHour;
+  final int endMinute;
+  final String firstWord;
+  final String secondWord;
+  final List<String> attendees;
 
+  ScheduleInfo({
+    required this.bgColor,
+    required this.startHour,
+    required this.startMinute,
+    required this.endHour,
+    required this.endMinute,
+    required this.firstWord,
+    required this.secondWord,
+    required this.attendees,
+  });
+}
+
+class CloneApp extends StatelessWidget {
+  CloneApp({super.key});
+
+  final List<ScheduleInfo> data = [
+    ScheduleInfo(
+        bgColor: Colors.yellow,
+        startHour: 11,
+        startMinute: 30,
+        endHour: 12,
+        endMinute: 20,
+        firstWord: 'DESIGN',
+        secondWord: 'METTING',
+        attendees: ['ALEX', 'HELENA', 'NANA']),
+    ScheduleInfo(
+        bgColor: const Color.fromARGB(255, 164, 88, 177),
+        startHour: 12,
+        startMinute: 35,
+        endHour: 14,
+        endMinute: 10,
+        firstWord: 'DESIGN',
+        secondWord: 'PROJECT',
+        attendees: [
+          'ME',
+          'RICHARD',
+          'CIRY',
+          'LEWIS',
+          'JAMES',
+          'ALEX',
+          'HELENA'
+        ]),
+    ScheduleInfo(
+        bgColor: Colors.green,
+        startHour: 15,
+        startMinute: 0,
+        endHour: 16,
+        endMinute: 30,
+        firstWord: 'WEEKLY',
+        secondWord: 'PLANNING',
+        attendees: ['DEN', 'NANA', 'MARK']),
+  ];
   @override
   Widget build(BuildContext context) {
-    // TODO: 1. 오늘 이후 남은 날짜를 List로 넘겨서 Text Widget을 여러개 리턴하도록 수정 필요
-    // final remainedDate = [17, 18, 19, 20, 21, 22];
+    final remainedDate = [17, 18, 19, 20, 21, 22];
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.grey[900],
@@ -72,79 +130,43 @@ class CloneApp extends StatelessWidget {
                           color: Colors.pink[600],
                           fontWeight: FontWeight.w600),
                     ),
-                    Text(
-                      '17',
-                      style: TextStyle(
-                          fontSize: 42,
-                          color: Colors.white.withOpacity(0.6),
-                          fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      '18',
-                      style: TextStyle(
-                          fontSize: 42,
-                          color: Colors.white.withOpacity(0.6),
-                          fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      '19',
-                      style: TextStyle(
-                          fontSize: 42,
-                          color: Colors.white.withOpacity(0.6),
-                          fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      '20',
-                      style: TextStyle(
-                          fontSize: 42,
-                          color: Colors.white.withOpacity(0.6),
-                          fontWeight: FontWeight.w600),
-                    ),
+                    for (var n in remainedDate)
+                      Row(
+                        children: [
+                          Text(
+                            '$n',
+                            style: TextStyle(
+                                fontSize: 42,
+                                color: Colors.white.withOpacity(0.6),
+                                fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 40,
-              ),
-              // TODO: 3. 미팅 참가자들도 마찬가지로 List로 명단을 넘겨서 ListView.builder?로 처리하는 방법 적용 필요
-              const ScheduleCard(
-                order: 0,
-                bgColor: Colors.yellow,
-                startHour: 11,
-                startMinute: 30,
-                endHour: 12,
-                endMinute: 20,
-                firstWord: 'DESIGN',
-                secondWord: 'MEETING',
-              ),
-              const ScheduleCard(
-                order: 1,
-                bgColor: Color.fromARGB(255, 164, 88, 177),
-                startHour: 12,
-                startMinute: 35,
-                endHour: 14,
-                endMinute: 10,
-                firstWord: 'DAILY',
-                secondWord: 'PROJECT',
-              ),
-              const ScheduleCard(
-                order: 2,
-                bgColor: Colors.green,
-                startHour: 15,
-                startMinute: 00,
-                endHour: 16,
-                endMinute: 30,
-                firstWord: 'WEEKLY',
-                secondWord: 'PLANNING',
+              SizedBox(
+                //TODO: SingleScroll Column 안에서 ListView.builder 사용 시 height 지정 필요
+                height: 1000,
+                child: ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return ScheduleCard(
+                      order: index,
+                      bgColor: data[index].bgColor,
+                      startHour: data[index].startHour,
+                      startMinute: data[index].startMinute,
+                      endHour: data[index].endHour,
+                      endMinute: data[index].endMinute,
+                      firstWord: data[index].firstWord,
+                      secondWord: data[index].secondWord,
+                      attendees: data[index].attendees,
+                    );
+                  },
+                ),
               ),
             ]),
           ),
@@ -163,6 +185,7 @@ class ScheduleCard extends StatelessWidget {
   final String firstWord;
   final String secondWord;
   final int order;
+  final List<String> attendees;
 
   const ScheduleCard({
     super.key,
@@ -174,6 +197,7 @@ class ScheduleCard extends StatelessWidget {
     required this.firstWord,
     required this.secondWord,
     required this.order,
+    required this.attendees,
   });
 
   @override
@@ -230,6 +254,16 @@ class ScheduleCard extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
+              // TODO: 참석자 리스트 조건 걸고 표시하기
+              for (var attendee in attendees)
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: 40,
+                    ),
+                    Text(attendee),
+                  ],
+                ),
               const Row(
                 children: [
                   SizedBox(
