@@ -1,5 +1,6 @@
-import 'package:dartflutter/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../screens/custom_screen.dart';
 
 class PomodoroCustomApp extends StatelessWidget {
   const PomodoroCustomApp({super.key});
@@ -10,14 +11,14 @@ class PomodoroCustomApp extends StatelessWidget {
         theme: ThemeData(
           textTheme: const TextTheme(
             displayLarge: TextStyle(
-              color: Color(0xFF232B55),
+              color: Colors.red,
             ),
           ),
           cardColor: const Color(0xFFF4EDDB),
           colorScheme: ColorScheme.fromSwatch(
-            backgroundColor: const Color(0xFFE7626C),
+            backgroundColor: Colors.red,
           ),
         ),
-        home: const HomeScreen());
+        home: const CustomScreen());
   }
 }
