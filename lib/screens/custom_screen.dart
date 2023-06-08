@@ -11,7 +11,9 @@ class CustomScreen extends StatefulWidget {
 
 class _CustomScreenState extends State<CustomScreen> {
   static const fifteenMinutes = 15 * 60;
+  static const cooldownMinutes = 5 * 60;
   int totalSeconds = fifteenMinutes;
+  int cooldownSeconds = cooldownMinutes;
   late Timer timer;
   bool isRunning = false;
   int totalPomodoros = 0;
@@ -20,6 +22,7 @@ class _CustomScreenState extends State<CustomScreen> {
   int goalsRound = 12;
   int selectedTimeSet = 15;
   bool isFirstStarted = false;
+  bool breakTime = false;
 
   List<int> timeSetList = [15, 20, 25, 30, 35];
 
@@ -39,6 +42,7 @@ class _CustomScreenState extends State<CustomScreen> {
           totalPomodoros++;
           isRunning = false;
           totalSeconds = fifteenMinutes;
+          breakTime = true;
           timer.cancel();
         }
       });
@@ -46,6 +50,7 @@ class _CustomScreenState extends State<CustomScreen> {
     setState(() {
       isRunning = true;
       isFirstStarted = true;
+      breakTime = false;
     });
   }
 
@@ -65,6 +70,7 @@ class _CustomScreenState extends State<CustomScreen> {
         totalPomodoros = 0;
         totalGoals = 0;
         selectedTimeSet = timeSetList[0];
+        breakTime = false;
       });
     }
   }
@@ -147,18 +153,31 @@ class _CustomScreenState extends State<CustomScreen> {
             ),
             Flexible(
               flex: 1,
-              child: Column(
-                children: [
-                  Text(
-                    format(totalSeconds),
-                    // '${totalSeconds ~/ 60}:${totalSeconds % 60}',
-                    style: TextStyle(
-                        color: Theme.of(context).cardColor,
-                        fontSize: 89,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
-              ),
+              child: breakTime
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Text(
+                            'Cool down time...',
+                            style: TextStyle(
+                                color: Theme.of(context).cardColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            format(cooldownSeconds),
+                            style: TextStyle(
+                                color: Theme.of(context).cardColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
+                    )
+                  : const SizedBox.shrink(),
             ),
             Flexible(
               flex: 3,
