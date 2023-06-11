@@ -1,4 +1,6 @@
-import 'package:dartflutter/home_widgets/pomodoro_custom_app.dart';
+import 'dart:io';
+
+import 'package:dartflutter/screens/webtoon_home.dart';
 import 'package:flutter/material.dart';
 
 class Player {
@@ -27,8 +29,26 @@ void main() {
   // runApp(const PomodoroApp());
 
   // 7. Pomodoro Custom App - Custom Timer
-  runApp(const PomodoroCustomApp());
+  // runApp(const PomodoroCustomApp());
+
+  // 8. Webtoon App
+  // API 호출 테스트
+  // ApiService.getTodaysToons();
+
+  // Image.network(webtoon.thumb) 호출 시 발생하는 에러 전역 처리 방법
+  // HTTP request failed, statusCode: 403
+  HttpOverrides.global = MyHttpOverrides();
+  runApp(WebtoonHomeScreen());
 
   // test
   // runApp(const TestApp());
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..userAgent =
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36';
+  }
 }
