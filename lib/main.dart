@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dartflutter/screens/webtoon_home.dart';
+import 'package:dartflutter/screens/movie_home.dart';
 import 'package:flutter/material.dart';
 
 class Player {
@@ -37,8 +37,11 @@ void main() {
 
   // Image.network(webtoon.thumb) 호출 시 발생하는 에러 전역 처리 방법
   // HTTP request failed, statusCode: 403
-  HttpOverrides.global = MyHttpOverrides();
-  runApp(WebtoonHomeScreen());
+  // HttpOverrides.global = MyHttpOverrides();
+  // runApp(WebtoonHomeScreen());
+
+  // 9. Movieflix
+  runApp(MovieHomeScreen());
 
   // test
   // runApp(const TestApp());
